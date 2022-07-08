@@ -1,0 +1,26 @@
+
+syntax = "proto3";
+
+option go_package = "./userPb";
+
+service User{
+  rpc Register(RegisterRequest) returns (RegisterReply){}
+}
+
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+  string nickname = 3;
+}
+
+message RegisterReply{
+  int32 retcode = 1;
+  string data = 2;  // 如果是object或者结构体类型可以转为json之后再放进去？
+}
+
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative internel/proto/user.proto
+// go_out 代表要输出到的目录
+// source_relative代表按原来的目录结构输出，比如：
+//        message/message.proto和hello/hello.proto就会在go_out指定的目录下生成
+//        message/message.pb.go和hello/hello.pb.go
+//

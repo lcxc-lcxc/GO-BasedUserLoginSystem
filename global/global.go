@@ -20,3 +20,16 @@ var (
 
 	UploadPictureFailed = RetCode{30010001, "Upload Picture Failed"}
 )
+
+var RetcodeMap = map[int]RetCode{
+	0:        Success,
+	10000000: ServerError,
+	10000001: InvalidParams,
+	10000002: NotFound,
+	20010001: UserLoginFailed,
+	20010002: UserLoginRequired,
+	20010003: UserRegisterFailed,
+	20010004: UserGetProfileFailed,
+	20010005: UserEditProfileFailed,
+	30010001: UploadPictureFailed,
+}
