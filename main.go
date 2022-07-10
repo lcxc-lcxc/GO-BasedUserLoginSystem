@@ -13,7 +13,15 @@ func main() {
 
 	//初始化Grpc服务器
 	initialization.InitializeGrpcServer()
-	global.GVA_Db = initialization.Gorm()
+	global.GVA_GRPC_CLIENT = initialization.InitializeGrpcClient()
+	defer func() {
+		err := global.GVA_GRPC_CLIENT.Close()
+		if err != nil {
+			log.Fatalf("conn close error=%v", err)
+		}
+	}()
+
+	global.GVA_DB = initialization.Gorm()
 
 	router := router.NewRouter()
 

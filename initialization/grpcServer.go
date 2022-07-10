@@ -18,6 +18,8 @@ func RegisterService(server *grpc.Server) {
 	userPb.RegisterUserServer(server, service.NewUserService())
 }
 
+var serverInitFinished chan bool = make(chan bool)
+
 func InitializeGrpcServer() {
 	go func() {
 		lis, err := net.Listen("tcp", config.GrpcAddress)
@@ -28,6 +30,7 @@ func InitializeGrpcServer() {
 		//注册服务
 		RegisterService(server)
 		log.Printf("grpc server listening at %v\n", lis.Addr())
+		serverInitFinished <- true
 		if err := server.Serve(lis); err != nil {
 			log.Fatalf("failed to serve: %v", err)
 		}

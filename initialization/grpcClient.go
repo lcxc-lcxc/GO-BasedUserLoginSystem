@@ -1,14 +1,21 @@
 /**
  @author: 15973
- @date: 2022/07/09
+ @date: 2022/07/10
  @note:
 **/
-package grpc_client
+package initialization
 
 import (
 	"google.golang.org/grpc"
 	"log"
+	"time"
 )
+
+func InitializeGrpcClient() *grpc.ClientConn {
+	<-serverInitFinished
+	time.Sleep(500 * time.Millisecond)
+	return NewGrpcClient()
+}
 
 func NewGrpcClient() *grpc.ClientConn {
 	cc, err := grpc.Dial("localhost:8081", grpc.WithInsecure(), grpc.WithBlock())

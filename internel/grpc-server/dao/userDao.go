@@ -17,7 +17,9 @@ import (
 // @param user
 // @return error
 func AddUser(user *entity.User) error {
-	result := global.GVA_Db.Create(&user)
+
+	result := global.GVA_DB.Create(&user)
+
 	if result.Error != nil {
 		log.Printf("Register : add user failed: %v", result.Error)
 		return result.Error

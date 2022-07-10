@@ -5,6 +5,10 @@
 **/
 package global
 
-import "gorm.io/gorm"
+import (
+	"google.golang.org/grpc"
+	"gorm.io/gorm"
+)
 
-var GVA_Db *gorm.DB
+var GVA_DB *gorm.DB
+var GVA_GRPC_CLIENT *grpc.ClientConn

@@ -8,8 +8,6 @@ import (
 func NewRouter() *gin.Engine {
 	router := gin.Default()
 
-	user := user.NewUser()
-
 	apiUser := router.Group("/api/user")
 
 	{
