@@ -27,7 +27,7 @@ func InitializeGrpcServer() {
 		server := grpc.NewServer()
 		//注册服务
 		RegisterService(server)
-		log.Printf("server listening at %v\n", lis.Addr())
+		log.Printf("grpc server listening at %v\n", lis.Addr())
 		if err := server.Serve(lis); err != nil {
 			log.Fatalf("failed to serve: %v", err)
 		}

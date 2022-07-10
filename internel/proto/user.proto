@@ -14,7 +14,7 @@ message RegisterRequest {
 }
 
 message RegisterReply{
-  int32 retcode = 1;
+  int64 retcode = 1;
   string data = 2;  // 如果是object或者结构体类型可以转为json之后再放进去？
 }
 

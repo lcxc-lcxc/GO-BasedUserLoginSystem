@@ -24,7 +24,7 @@ func Register(requestParam *userPb.RegisterRequest) (*userPb.RegisterReply, erro
 		}
 	}()
 	client := userPb.NewUserClient(cc)
-	ctx1, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx1, cancel := context.WithTimeout(context.Background(), time.Minute) //todo 改为Second
 	defer cancel()
 	reply, err := client.Register(ctx1, requestParam)
 	return reply, err

@@ -15,12 +15,24 @@ func NewUser() *User {
 	return &User{}
 }
 
+type RegisterRequest struct {
+	Username string `form:"username" json:"username" binding:"required,min=6,max=64"`
+	Password string `form:"password" json:"password" binding:"required,min=6,max=64"`
+	Nickname string `form:"nickname" json:"nickname" binding:"required,min=6,max=64"`
+}
+
+type RegisterResponse struct {
+	Msg     string `json:"msg"`
+	Retcode int    `json:"retcode"`
+	Data    string `json:"data"`
+}
+
 func (u *User) Register(c *gin.Context) {
 	var requestParam RegisterRequest
-	if err := c.ShouldBindJSON(&requestParam); err != nil {
-		c.JSON(http.StatusBadRequest, RegisterResponse{
-			Msg:     global.UserRegisterFailed.GetMsg(),
-			Retcode: global.UserRegisterFailed.GetRetCode(),
+	if err := c.ShouldBind(&requestParam); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg":     global.UserRegisterFailed.GetMsg(),
+			"retcode": global.UserRegisterFailed.GetRetCode(),
 		})
 		return
 	}
@@ -30,18 +42,18 @@ func (u *User) Register(c *gin.Context) {
 		Nickname: requestParam.Nickname,
 	}
 	if reply, err := grpc_client.Register(userRegisterRequestPb); err != nil {
-		c.JSON(http.StatusBadRequest, RegisterResponse{
-			Retcode: int(reply.Retcode),
+		c.JSON(http.StatusOK, RegisterResponse{
+			Retcode: global.UserRegisterFailed.GetRetCode(),
 			Msg:     global.UserRegisterFailed.GetMsg(),
-			Data:    reply.Data,
 		})
 		return
+	} else {
+		replyRetCode := int(reply.Retcode)
+		c.JSON(http.StatusOK, RegisterResponse{
+			Retcode: replyRetCode,
+			Msg:     global.RetcodeMap[replyRetCode].GetMsg(),
+			Data:    reply.Data,
+		})
 	}
-
-	c.JSON(http.StatusOK, RegisterResponse{
-		Retcode: global.Success.GetRetCode(),
-		Msg:     global.Success.GetMsg(),
-		Data:    struct{}{},
-	})
 
 }
