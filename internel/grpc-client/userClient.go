@@ -12,17 +12,22 @@ import (
 	userPb "v0.0.0/internel/proto"
 )
 
+var userClient userPb.UserClient = userPb.NewUserClient(global.GVA_GRPC_CLIENT)
+
 func Register(requestParam *userPb.RegisterRequest) (*userPb.RegisterReply, error) {
 
-	//由于创建client就是创建一个stub，来复用channel的，所以可以每次都创建   ？
-	cc := global.GVA_GRPC_CLIENT
-
-	client := userPb.NewUserClient(cc)
-	ctx1, cancel := context.WithTimeout(context.Background(), time.Minute) //todo 改为Second
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second) //todo 改为Second
 	defer cancel()
 
-	reply, err := client.Register(ctx1, requestParam)
+	return userClient.Register(ctx, requestParam)
 
-	return reply, err
+}
+
+func Login(requestParam *userPb.LoginRequest) (*userPb.LoginReply, error) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second) //todo 改为Second
+	defer cancel()
+
+	return userClient.Login(ctx, requestParam)
 
 }

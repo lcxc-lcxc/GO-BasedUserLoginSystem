@@ -46,7 +46,12 @@ func (u *UserService) Register(ctx context.Context, req *userPb.RegisterRequest)
 		return reply, nil
 	} else {
 		reply.Retcode = int64(global.Success.GetRetCode())
+		reply.Data = &userPb.RegisterReply_Data{}
 		return reply, nil
 	}
 
+}
+
+func Login(context.Context, *userPb.LoginRequest) (*userPb.LoginReply, error) {
+	return nil, nil
 }
