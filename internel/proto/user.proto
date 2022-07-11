@@ -6,6 +6,9 @@ option go_package = "./userPb";
 service User{
   rpc Register(RegisterRequest) returns (RegisterReply){}
   rpc Login(LoginRequest) returns (LoginReply){}
+  rpc ExtendRedisKeyExpire(ExtendRedisKeyExpireRequest)returns (ExtendRedisKeyExpireReply) {}
+  rpc Get(GetRequest) returns (GetReply){}
+  rpc Edit(EditRequest) returns (EditReply){}
 }
 
 message RegisterRequest {
@@ -17,7 +20,7 @@ message RegisterRequest {
 message RegisterReply{
   int64 retcode = 1;
   message Data {}
-  Data data = 2;  // 如果是object或者结构体类型可以转为json之后再放进去？
+  Data data = 2;
 }
 
 
@@ -31,6 +34,42 @@ message LoginReply{
     string session_id = 1;
   }
   int64 retcode = 1;
+  Data data = 2;
+}
+
+message ExtendRedisKeyExpireRequest{
+  string SessionId = 1;
+}
+
+message ExtendRedisKeyExpireReply{
+  bool succeed = 1 ;
+}
+
+
+message GetRequest{
+  string SessionId = 1;
+}
+
+message GetReply{
+  message Data {
+    string Username = 1;
+    string Nickname = 2;
+    string PicProfile = 3;
+  }
+  int64 Retcode = 1;
+  Data data = 2;
+}
+
+message EditRequest{
+  string SessionId = 1;
+  string NewNickname = 2;
+  string NewPicProfile = 3;
+}
+
+message EditReply{
+  message Data{}
+
+  int64 Retcode = 1;
   Data data = 2;
 }
 

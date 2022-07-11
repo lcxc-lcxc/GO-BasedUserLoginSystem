@@ -8,9 +8,10 @@ package entity
 import "gorm.io/gorm"
 
 type User struct {
-	ID       uint
-	Username string
-	Password string
-	Nickname string
+	ID         uint
+	Username   string
+	Password   string
+	Nickname   string
+	PicProfile string
 	gorm.Model
 }

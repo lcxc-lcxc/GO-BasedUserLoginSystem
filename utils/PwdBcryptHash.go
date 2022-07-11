@@ -29,10 +29,10 @@ func PwdHash(pwd string) (string, error) {
 // PwdVerify
 // author:  lcxc
 // @Description: 用于比较数据库的Hash加密值 是否和 pwd匹配
-// @param pwd
 // @param hash
+// @param pwd
 // @return bool
-func PwdVerify(pwd, hash string) bool {
+func PwdVerify(hash, pwd string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pwd))
 	return err == nil
 }

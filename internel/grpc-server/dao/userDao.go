@@ -26,3 +26,29 @@ func AddUser(user *entity.User) error {
 	}
 	return nil
 }
+
+func GetUserByUsername(username string) (*entity.User, error) {
+	user := &entity.User{}
+	result := global.GVA_DB.Where("username=?", username).First(user)
+	if result.Error != nil {
+		log.Printf("Register : get user profile failed: %v", result.Error)
+		return nil, nil
+	}
+	return user, nil
+
+}
+
+func GetUserByID(userID uint) (*entity.User, error) {
+	user := &entity.User{}
+	result := global.GVA_DB.First(user, userID)
+	if result.Error != nil {
+		log.Printf("Register : get user profile_pic failed %v ", result.Error)
+		return nil, nil
+	}
+	return user, nil
+
+}
+func EditUserByUserId(user entity.User, userId uint) error {
+	err := global.GVA_DB.Model(&entity.User{ID: userId}).Updates(user).Error
+	return err
+}

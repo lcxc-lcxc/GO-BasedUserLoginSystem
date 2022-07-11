@@ -9,19 +9,29 @@ import (
 	"v0.0.0/internel/router"
 )
 
+func init() {
+	initialization.InitializeGrpcServer()
+	global.GVA_GRPC_CLIENT = initialization.InitializeGrpcClient()
+	global.GVA_REDIS_CLIENT = initialization.InitializeRedisClient()
+	global.GVA_DB = initialization.Gorm()
+}
+
 func main() {
 
 	//初始化Grpc服务器
-	initialization.InitializeGrpcServer()
-	global.GVA_GRPC_CLIENT = initialization.InitializeGrpcClient()
+
 	defer func() {
 		err := global.GVA_GRPC_CLIENT.Close()
 		if err != nil {
-			log.Fatalf("conn close error=%v", err)
+			log.Fatalf("grpc client conn close error=%v", err)
 		}
 	}()
-
-	global.GVA_DB = initialization.Gorm()
+	defer func() {
+		err := global.GVA_REDIS_CLIENT.Close()
+		if err != nil {
+			log.Fatalf("redis conn close error= %v ", err)
+		}
+	}()
 
 	router := router.NewRouter()
 
