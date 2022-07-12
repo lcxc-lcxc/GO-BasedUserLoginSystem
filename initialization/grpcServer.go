@@ -11,11 +11,13 @@ import (
 	"net"
 	"v0.0.0/config"
 	"v0.0.0/internel/grpc-server/service"
-	userPb "v0.0.0/internel/proto"
+	pb "v0.0.0/internel/proto"
 )
 
 func RegisterService(server *grpc.Server) {
-	userPb.RegisterUserServer(server, service.NewUserService())
+	pb.RegisterUserServer(server, service.NewUserService())
+	pb.RegisterUploadServer(server, service.NewUploadService())
+
 }
 
 var serverInitFinished chan bool = make(chan bool)

@@ -1,7 +1,7 @@
 
 syntax = "proto3";
 
-option go_package = "./userPb";
+option go_package = "./pb";
 
 service User{
   rpc Register(RegisterRequest) returns (RegisterReply){}

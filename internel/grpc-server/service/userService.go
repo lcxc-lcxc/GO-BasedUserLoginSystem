@@ -15,20 +15,20 @@ import (
 	"v0.0.0/global"
 	"v0.0.0/internel/grpc-server/dao"
 	"v0.0.0/internel/grpc-server/entity"
-	userPb "v0.0.0/internel/proto"
+	pb "v0.0.0/internel/proto"
 	"v0.0.0/utils"
 )
 
 type UserService struct {
-	userPb.UnimplementedUserServer
+	pb.UnimplementedUserServer
 }
 
 func NewUserService() *UserService {
 	return &UserService{}
 }
 
-func (u *UserService) Register(ctx context.Context, req *userPb.RegisterRequest) (*userPb.RegisterReply, error) {
-	reply := &userPb.RegisterReply{}
+func (u *UserService) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
+	reply := &pb.RegisterReply{}
 	pwdHash, err := utils.PwdHash(req.Password)
 	if err != nil {
 		reply.Retcode = int64(global.ServerError.GetRetCode())
@@ -49,14 +49,14 @@ func (u *UserService) Register(ctx context.Context, req *userPb.RegisterRequest)
 		return reply, nil
 	} else {
 		reply.Retcode = int64(global.Success.GetRetCode())
-		reply.Data = &userPb.RegisterReply_Data{}
+		reply.Data = &pb.RegisterReply_Data{}
 		return reply, nil
 	}
 
 }
 
-func (u *UserService) Login(ctx context.Context, req *userPb.LoginRequest) (*userPb.LoginReply, error) {
-	reply := &userPb.LoginReply{}
+func (u *UserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
+	reply := &pb.LoginReply{}
 	// 1. 查数据库username 的password
 	user, err := dao.GetUserByUsername(req.Username)
 	if err != nil {
@@ -82,12 +82,12 @@ func (u *UserService) Login(ctx context.Context, req *userPb.LoginRequest) (*use
 	}
 	//3.3 返回 session_id 给 gin
 	reply.Retcode = int64(global.Success.GetRetCode())
-	reply.Data = &userPb.LoginReply_Data{SessionId: session_id}
+	reply.Data = &pb.LoginReply_Data{SessionId: session_id}
 	return reply, nil
 }
 
-func (u *UserService) ExtendRedisKeyExpire(ctx context.Context, req *userPb.ExtendRedisKeyExpireRequest) (*userPb.ExtendRedisKeyExpireReply, error) {
-	reply := &userPb.ExtendRedisKeyExpireReply{}
+func (u *UserService) ExtendRedisKeyExpire(ctx context.Context, req *pb.ExtendRedisKeyExpireRequest) (*pb.ExtendRedisKeyExpireReply, error) {
+	reply := &pb.ExtendRedisKeyExpireReply{}
 	err := global.GVA_REDIS_CLIENT.Expire(context.Background(), req.SessionId, time.Hour).Err()
 	if err != nil {
 		reply.Succeed = false
@@ -112,9 +112,9 @@ func GetUserIdBySessionId(sessionId string) (uint, error) {
 	return uint(tmpUserId), nil
 }
 
-func (u *UserService) Get(ctx context.Context, req *userPb.GetRequest) (*userPb.GetReply, error) {
+func (u *UserService) Get(ctx context.Context, req *pb.GetRequest) (*pb.GetReply, error) {
 
-	reply := &userPb.GetReply{}
+	reply := &pb.GetReply{}
 	//1. 根据sessionId 获取userId
 	userId, err := GetUserIdBySessionId(req.SessionId)
 	if err != nil {
@@ -131,7 +131,7 @@ func (u *UserService) Get(ctx context.Context, req *userPb.GetRequest) (*userPb.
 	}
 
 	reply.Retcode = int64(global.Success.GetRetCode())
-	reply.Data = &userPb.GetReply_Data{
+	reply.Data = &pb.GetReply_Data{
 		Username:   user.Username,
 		Nickname:   user.Nickname,
 		PicProfile: user.PicProfile,
@@ -140,8 +140,8 @@ func (u *UserService) Get(ctx context.Context, req *userPb.GetRequest) (*userPb.
 
 }
 
-func (u *UserService) Edit(ctx context.Context, req *userPb.EditRequest) (*userPb.EditReply, error) {
-	reply := &userPb.EditReply{}
+func (u *UserService) Edit(ctx context.Context, req *pb.EditRequest) (*pb.EditReply, error) {
+	reply := &pb.EditReply{}
 	// 1. 得到user_id
 	userId, err := GetUserIdBySessionId(req.SessionId)
 	if err != nil {
@@ -158,6 +158,6 @@ func (u *UserService) Edit(ctx context.Context, req *userPb.EditRequest) (*userP
 		return reply, nil
 	}
 	reply.Retcode = int64(global.Success.GetRetCode())
-	reply.Data = &userPb.EditReply_Data{}
+	reply.Data = &pb.EditReply_Data{}
 	return reply, nil
 }

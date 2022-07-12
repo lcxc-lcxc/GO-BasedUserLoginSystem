@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+
+service Upload{
+  rpc Picture(PictureRequest) returns (PictureReply){}
+}
+
+message PictureRequest{
+  string file_url = 1;
+  string session_id = 2;
+}
+
+message PictureReply {
+  message Data{
+    string FileUrl = 1;
+  }
+  int64 Retcode = 1;
+  Data data = 2;
+}

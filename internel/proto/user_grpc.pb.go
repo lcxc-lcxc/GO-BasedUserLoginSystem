@@ -4,7 +4,7 @@
 // - protoc             v3.21.2
 // source: internel/proto/user.proto
 
-package userPb
+package pb
 
 import (
 	context "context"

@@ -7,31 +7,20 @@ import (
 	"net/http"
 	"time"
 	"v0.0.0/global"
-	userPb "v0.0.0/internel/proto"
+	"v0.0.0/internel/api/common"
+	pb "v0.0.0/internel/proto"
 )
 
-var userClient userPb.UserClient
+var userClient pb.UserClient
 
-func getUserClient() userPb.UserClient {
+func getUserClient() pb.UserClient {
 	if userClient != nil {
 		return userClient
 	} else {
-		userClient = userPb.NewUserClient(global.GVA_GRPC_CLIENT)
+		userClient = pb.NewUserClient(global.GVA_GRPC_CLIENT)
 		return userClient
 	}
 
-}
-
-type GeneralResponse struct {
-	Msg     string `json:"msg"`
-	Retcode int    `json:"retcode"`
-}
-
-func ResponseWithoutData(c *gin.Context, retcode int) {
-	c.JSON(http.StatusOK, GeneralResponse{
-		Retcode: retcode,
-		Msg:     global.RetcodeMap[retcode].GetMsg(),
-	})
 }
 
 type RegisterRequest struct {
@@ -54,10 +43,10 @@ func Register(c *gin.Context) {
 	//}()
 	var requestParam RegisterRequest
 	if err := c.ShouldBind(&requestParam); err != nil {
-		ResponseWithoutData(c, global.InvalidParams.GetRetCode())
+		common.ResponseWithoutData(c, global.InvalidParams.GetRetCode())
 		return
 	}
-	userRegisterRequestPb := &userPb.RegisterRequest{
+	userRegisterRequestPb := &pb.RegisterRequest{
 		Username: requestParam.Username,
 		Password: requestParam.Password,
 		Nickname: requestParam.Nickname,
@@ -66,7 +55,7 @@ func Register(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute) //todo 改为Second
 	defer cancel()
 	if reply, err := getUserClient().Register(ctx, userRegisterRequestPb); err != nil {
-		ResponseWithoutData(c, global.UserRegisterFailed.GetRetCode())
+		common.ResponseWithoutData(c, global.UserRegisterFailed.GetRetCode())
 		return
 	} else {
 		replyRetCode := int(reply.Retcode)
@@ -78,7 +67,7 @@ func Register(c *gin.Context) {
 			})
 			return
 		} else {
-			ResponseWithoutData(c, int(reply.Retcode))
+			common.ResponseWithoutData(c, int(reply.Retcode))
 			return
 		}
 
@@ -120,11 +109,11 @@ func Login(c *gin.Context) {
 
 	var loginRequest LoginRequest
 	if err := c.ShouldBind(&loginRequest); err != nil {
-		ResponseWithoutData(c, global.InvalidParams.GetRetCode())
+		common.ResponseWithoutData(c, global.InvalidParams.GetRetCode())
 		return
 	}
 
-	loginRequestPb := &userPb.LoginRequest{
+	loginRequestPb := &pb.LoginRequest{
 		Username: loginRequest.Username,
 		Password: loginRequest.Password,
 	}
@@ -133,7 +122,7 @@ func Login(c *gin.Context) {
 	defer cancel()
 
 	if reply, err := getUserClient().Login(ctx, loginRequestPb); err != nil {
-		ResponseWithoutData(c, global.UserLoginFailed.GetRetCode())
+		common.ResponseWithoutData(c, global.UserLoginFailed.GetRetCode())
 		return
 	} else {
 		replyRetCode := int(reply.Retcode)
@@ -148,7 +137,7 @@ func Login(c *gin.Context) {
 			})
 			return
 		} else {
-			ResponseWithoutData(c, int(reply.Retcode))
+			common.ResponseWithoutData(c, int(reply.Retcode))
 			return
 		}
 	}
@@ -158,7 +147,7 @@ func Login(c *gin.Context) {
 func ExtendRedisKeyExpire(sessionId string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute) //todo 改为Second
 	defer cancel()
-	reply, err := getUserClient().ExtendRedisKeyExpire(ctx, &userPb.ExtendRedisKeyExpireRequest{
+	reply, err := getUserClient().ExtendRedisKeyExpire(ctx, &pb.ExtendRedisKeyExpireRequest{
 		SessionId: sessionId,
 	})
 	if err != nil || !reply.Succeed {
@@ -185,9 +174,9 @@ func Get(c *gin.Context) {
 	session_id, _ := c.Cookie("session_id")
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute) //todo 改为Second
 	defer cancel()
-	reply, err := getUserClient().Get(ctx, &userPb.GetRequest{SessionId: session_id})
+	reply, err := getUserClient().Get(ctx, &pb.GetRequest{SessionId: session_id})
 	if err != nil {
-		ResponseWithoutData(c, global.UserGetProfileFailed.GetRetCode())
+		common.ResponseWithoutData(c, global.UserGetProfileFailed.GetRetCode())
 		return
 	}
 	replyRetcode := int(reply.Retcode)
@@ -206,7 +195,7 @@ func Get(c *gin.Context) {
 			},
 		})
 	} else {
-		ResponseWithoutData(c, replyRetcode)
+		common.ResponseWithoutData(c, replyRetcode)
 	}
 
 }
@@ -230,14 +219,14 @@ func Edit(c *gin.Context) {
 	session_id, _ := c.Cookie("session_id")
 	var editRequest EditRequest
 	if err := c.ShouldBind(&editRequest); err != nil {
-		ResponseWithoutData(c, global.InvalidParams.GetRetCode())
+		common.ResponseWithoutData(c, global.InvalidParams.GetRetCode())
 		return
 	}
 	if len(editRequest.Nickname) != 0 && len(editRequest.Nickname) < 6 { // 这是一个补丁，因为绑定可选参数nickname的话，tag上必须是min=0
-		ResponseWithoutData(c, global.InvalidParams.GetRetCode())
+		common.ResponseWithoutData(c, global.InvalidParams.GetRetCode())
 		return
 	}
-	editRequestPb := &userPb.EditRequest{
+	editRequestPb := &pb.EditRequest{
 		SessionId:     session_id,
 		NewNickname:   editRequest.Nickname,
 		NewPicProfile: editRequest.Pic_profile,
@@ -248,7 +237,7 @@ func Edit(c *gin.Context) {
 
 	reply, err := getUserClient().Edit(ctx, editRequestPb)
 	if err != nil {
-		ResponseWithoutData(c, global.UserEditProfileFailed.GetRetCode())
+		common.ResponseWithoutData(c, global.UserEditProfileFailed.GetRetCode())
 		return
 	}
 	replyRetcode := int(reply.Retcode)
@@ -259,6 +248,6 @@ func Edit(c *gin.Context) {
 			Data:    struct{}{},
 		})
 	} else {
-		ResponseWithoutData(c, replyRetcode)
+		common.ResponseWithoutData(c, replyRetcode)
 	}
 }
