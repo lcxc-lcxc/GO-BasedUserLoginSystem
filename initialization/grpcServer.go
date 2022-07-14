@@ -6,10 +6,11 @@
 package initialization
 
 import (
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"log"
 	"net"
-	"v0.0.0/config"
+
 	"v0.0.0/internel/grpc-server/service"
 	pb "v0.0.0/internel/proto"
 )
@@ -24,7 +25,7 @@ var serverInitFinished chan bool = make(chan bool)
 
 func InitializeGrpcServer() {
 	go func() {
-		lis, err := net.Listen("tcp", config.GrpcAddress)
+		lis, err := net.Listen("tcp", viper.GetString("rpcServer.address"))
 		if err != nil {
 			log.Fatalf("failed to listen: %v", err)
 		}

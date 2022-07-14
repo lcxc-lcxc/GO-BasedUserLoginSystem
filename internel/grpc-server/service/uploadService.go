@@ -7,6 +7,7 @@ package service
 
 import (
 	"context"
+	"strconv"
 	"v0.0.0/global"
 	"v0.0.0/internel/grpc-server/dao"
 	pb "v0.0.0/internel/proto"
@@ -38,6 +39,7 @@ func (u *UploadService) Picture(ctx context.Context, req *pb.PictureRequest) (*p
 		//存url成功了
 		reply.Retcode = int64(global.Success.GetRetCode())
 		reply.Data = &pb.PictureReply_Data{FileUrl: req.FileUrl}
+		global.GVA_REDIS_CLIENT.Del(ctx, global.RedisUserCachePrefix+strconv.FormatUint(uint64(userId), 10))
 		return reply, nil
 	}
 

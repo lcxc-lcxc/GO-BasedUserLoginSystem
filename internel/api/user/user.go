@@ -89,23 +89,23 @@ type LoginResponse struct {
 }
 
 func Login(c *gin.Context) {
-	//如果已经登录
-	session_id, _ := c.Cookie("session_id")
-
-	if session_id != "" {
-		c.SetCookie("session_id", session_id, 3600, "/", "localhost", false, true)
-		ExtendRedisKeyExpire(session_id)
-		c.JSON(http.StatusOK, LoginResponse{
-			Retcode: global.Success.GetRetCode(),
-			Msg:     global.Success.GetMsg(),
-			Data: struct {
-				SessionId string `json:"session_id"`
-			}{
-				SessionId: session_id,
-			},
-		})
-		return
-	}
+	////如果已经登录
+	//session_id, _ := c.Cookie("session_id")
+	//
+	//if session_id != "" {
+	//	c.SetCookie("session_id", session_id, 3600, "/", "localhost", false, true)
+	//	ExtendRedisKeyExpire(session_id)
+	//	c.JSON(http.StatusOK, LoginResponse{
+	//		Retcode: global.Success.GetRetCode(),
+	//		Msg:     global.Success.GetMsg(),
+	//		Data: struct {
+	//			SessionId string `json:"session_id"`
+	//		}{
+	//			SessionId: session_id,
+	//		},
+	//	})
+	//	return
+	//}
 
 	var loginRequest LoginRequest
 	if err := c.ShouldBind(&loginRequest); err != nil {

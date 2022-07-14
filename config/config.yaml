@@ -1,0 +1,10 @@
+httpSever:
+  address: "127.0.0.1:8080"
+rpcServer:
+  address: "127.0.0.1:8081"
+mysql:
+  address: "127.0.0.1:3306"
+  database: "shopeeentrytask"
+  charset: "utf8mb4"
+redis:
+  address: "192.168.56.108:6379"

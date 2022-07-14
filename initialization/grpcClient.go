@@ -6,6 +6,7 @@
 package initialization
 
 import (
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"log"
 	"time"
@@ -18,7 +19,7 @@ func InitializeGrpcClient() *grpc.ClientConn {
 }
 
 func NewGrpcClient() *grpc.ClientConn {
-	cc, err := grpc.Dial("localhost:8081", grpc.WithInsecure(), grpc.WithBlock())
+	cc, err := grpc.Dial(viper.GetString("rpcServer.address"), grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}

@@ -1,15 +1,16 @@
 package main
 
 import (
+	"github.com/spf13/viper"
 	"log"
 	"net/http"
-	"v0.0.0/config"
 	"v0.0.0/global"
 	"v0.0.0/initialization"
 	"v0.0.0/internel/router"
 )
 
 func init() {
+	initialization.InitializeViper()
 	initialization.InitializeGrpcServer()
 	global.GVA_GRPC_CLIENT = initialization.InitializeGrpcClient()
 	global.GVA_REDIS_CLIENT = initialization.InitializeRedisClient()
@@ -36,7 +37,7 @@ func main() {
 	router := router.NewRouter()
 
 	s := http.Server{
-		Addr:    config.HttpAddress,
+		Addr:    viper.GetString("httpSever.address"),
 		Handler: router,
 	}
 	log.Printf("http server listening at %v\n", s.Addr)

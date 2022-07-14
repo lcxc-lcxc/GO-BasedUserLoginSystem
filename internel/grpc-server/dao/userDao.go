@@ -42,7 +42,7 @@ func GetUserByID(userID uint) (*entity.User, error) {
 	user := &entity.User{}
 	result := global.GVA_DB.First(user, userID)
 	if result.Error != nil {
-		log.Printf("Register : get user profile_pic failed %v ", result.Error)
+		log.Printf("get user profile_pic failed %v ", result.Error)
 		return nil, nil
 	}
 	return user, nil

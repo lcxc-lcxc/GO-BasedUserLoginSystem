@@ -7,6 +7,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"log"
@@ -73,8 +74,8 @@ func (u *UserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Logi
 	// 3. 整合session
 	//3.1 生成 session_id
 	session_id := uuid.NewString()
-	//3.2 存储 session_id => user.id 键值对
-	err = global.GVA_REDIS_CLIENT.Set(context.Background(), session_id, user.ID, time.Hour).Err()
+	//3.2 存储 session_id => user.username 键值对
+	err = global.GVA_REDIS_CLIENT.Set(context.Background(), global.RedisSessionIdPrefix+session_id, user.ID, time.Hour).Err()
 	if err != nil {
 		log.Fatalf("login: redis save failed : %v", err)
 		reply.Retcode = int64(global.UserLoginFailed.GetRetCode())
@@ -83,7 +84,23 @@ func (u *UserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Logi
 	//3.3 返回 session_id 给 gin
 	reply.Retcode = int64(global.Success.GetRetCode())
 	reply.Data = &pb.LoginReply_Data{SessionId: session_id}
+	//4 缓存 user
+	err = CacheLoginUser(user)
+	if err != nil {
+		log.Printf("login cache user failed :%v ", err)
+	}
 	return reply, nil
+}
+
+func CacheLoginUser(user *entity.User) error {
+	cacheKey := global.RedisUserCachePrefix + strconv.FormatUint(uint64(user.ID), 10)
+	user.Password = ""
+	marshal, err := json.Marshal(*user)
+	if err != nil {
+		return err
+	}
+	return global.GVA_REDIS_CLIENT.Set(context.Background(), cacheKey, marshal, 30*time.Minute).Err()
+
 }
 
 func (u *UserService) ExtendRedisKeyExpire(ctx context.Context, req *pb.ExtendRedisKeyExpireRequest) (*pb.ExtendRedisKeyExpireReply, error) {
@@ -99,17 +116,17 @@ func (u *UserService) ExtendRedisKeyExpire(ctx context.Context, req *pb.ExtendRe
 }
 
 func GetUserIdBySessionId(sessionId string) (uint, error) {
-	result, err := global.GVA_REDIS_CLIENT.Get(context.Background(), sessionId).Result()
+	result, err := global.GVA_REDIS_CLIENT.Get(context.Background(), global.RedisSessionIdPrefix+sessionId).Result()
 	if err != nil {
 		log.Printf("Profile Get : get redis userId failed: %v", err)
 		return 0, err
 	}
-	tmpUserId, err := strconv.ParseUint(result, 0, 0)
+	parseUint, err := strconv.ParseUint(result, 10, 0)
 	if err != nil {
-		log.Printf("Profile Get : userId is not a uint : %v", err)
-		return 0, err
+		log.Printf("Profile Get : profile userId is not uint: %v", err)
 	}
-	return uint(tmpUserId), nil
+
+	return uint(parseUint), nil
 }
 
 func (u *UserService) Get(ctx context.Context, req *pb.GetRequest) (*pb.GetReply, error) {
@@ -122,12 +139,22 @@ func (u *UserService) Get(ctx context.Context, req *pb.GetRequest) (*pb.GetReply
 		return reply, nil
 	}
 
-	// 2.获取User
-	user, err := dao.GetUserByID(userId)
-	if err != nil || user.Username == "" {
-		log.Printf("Profile Get : user does not exist : %v", err)
-		reply.Retcode = int64(global.ServerError.GetRetCode())
-		return reply, nil
+	user := &entity.User{}
+	// 1.99 去redis拿user的信息
+	marshal, err := global.GVA_REDIS_CLIENT.Get(ctx, global.RedisUserCachePrefix+strconv.FormatUint(uint64(userId), 10)).Bytes()
+	if err != nil {
+		log.Printf("get user cache failed : %v", err)
+		// 2.获取User
+		user, err = dao.GetUserByID(userId)
+		if err != nil || user.Username == "" {
+			log.Printf("Profile Get : user does not exist : %v", err)
+			reply.Retcode = int64(global.ServerError.GetRetCode())
+			return reply, nil
+		}
+		// 2.1 更新redis
+		CacheLoginUser(user)
+	} else {
+		json.Unmarshal(marshal, user)
 	}
 
 	reply.Retcode = int64(global.Success.GetRetCode())
@@ -159,5 +186,7 @@ func (u *UserService) Edit(ctx context.Context, req *pb.EditRequest) (*pb.EditRe
 	}
 	reply.Retcode = int64(global.Success.GetRetCode())
 	reply.Data = &pb.EditReply_Data{}
+	// 3. 设redis的内容为无效
+	global.GVA_REDIS_CLIENT.Del(ctx, global.RedisUserCachePrefix+strconv.FormatUint(uint64(userId), 10))
 	return reply, nil
 }
