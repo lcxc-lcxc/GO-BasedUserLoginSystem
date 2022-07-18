@@ -7,21 +7,18 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"v0.0.0/global"
+	"v0.0.0/internel/constant"
+	"v0.0.0/pkg/response"
 )
 
 func Authorize() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sessionCookie, err := c.Request.Cookie("session_id")
 		if err != nil || sessionCookie == nil {
-			c.JSON(http.StatusOK, gin.H{
-				"retcode": global.UserLoginRequired.GetRetCode(),
-				"msg":     global.UserLoginRequired.GetMsg(),
-			})
+			response.NewResponse(c).ResponseError(constant.UserLoginRequired.GetRetCode())
 			c.Abort()
+			return
 		}
-
 		c.Next()
 
 	}

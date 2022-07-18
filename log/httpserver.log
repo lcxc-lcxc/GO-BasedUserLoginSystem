@@ -1,0 +1,59 @@
+2022/07/18 main.go:69: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:69: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:69: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:69: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:69: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:69: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:69: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp 127.0.0.1:8081: connectex: No connection could be made because the target machine actively refused it."
+2022/07/18 user.go:31: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp 127.0.0.1:8081: connectex: No connection could be made because the target machine actively refused it."
+2022/07/18 user.go:31: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp 127.0.0.1:8081: connectex: No connection could be made because the target machine actively refused it."
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Error 1062: Duplicate entry 'eeeeeeeeeeee3333333333' for key 'users.username'
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:66: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:66: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:66: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:67: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:31: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 main.go:68: Starting HTTP Server , Listening :8080 
+2022/07/18 user.go:63: rpc error: code = Unknown desc = Login Fail : User Not Exist
+2022/07/18 user.go:63: rpc error: code = Unknown desc = Login fail : pwd incorrect
+2022/07/18 user.go:63: rpc error: code = Unknown desc = Login fail : pwd incorrect
+2022/07/18 user.go:30: rpc error: code = Unknown desc = Register Failed : Username Exist 
+2022/07/18 user.go:93: rpc error: code = Unknown desc = userservice Get fail : User Is Not Login in

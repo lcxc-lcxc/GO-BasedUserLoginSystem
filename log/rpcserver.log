@@ -1,0 +1,116 @@
+2022/07/18 cache.go:37: set cost time : 975400
+2022/07/18 cache.go:37: set cost time : 0
+2022/07/18 cache.go:37: set cost time : 5856000
+2022/07/18 cache.go:37: set cost time : 3903800
+2022/07/18 cache.go:37: set cost time : 0
+2022/07/18 cache.go:37: set cost time : 939900
+2022/07/18 cache.go:37: set cost time : 1952000
+2022/07/18 cache.go:37: set cost time : 0
+2022/07/18 cache.go:37: set cost time : 740100
+2022/07/18 cache.go:37: set cost time : 891400
+2022/07/18 cache.go:37: set cost time : 975600
+2022/07/18 cache.go:37: set cost time : 1225700
+2022/07/18 cache.go:37: set cost time : 2928200
+2022/07/18 recovery.go:19: method: /FileService/Upload, message: runtime error: invalid memory address or nil pointer dereference, stack: goroutine 83 [running]:
+runtime/debug.Stack()
+	C:/Go/src/runtime/debug/stack.go:24 +0x7a
+v0.0.0/internel/middleware.Recovery.func1()
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/middleware/recovery.go:19 +0x5e
+panic({0x1a4f6e0, 0x20b1e00})
+	C:/Go/src/runtime/panic.go:1047 +0x262
+v0.0.0/internel/service/grpc-service.FileService.Upload({{0x1bb94d0, 0xc000038060}, 0xc000546058, 0xc000546060, {}}, {0x1bb9540, 0xc00049a870}, 0xc000132070)
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/service/grpc-service/file.go:63 +0x3e6
+v0.0.0/internel/proto._FileService_Upload_Handler.func1({0x1bb9540, 0xc00049a870}, {0x1abb9e0, 0xc000132070})
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/proto/upload_grpc.pb.go:86 +0xfa
+v0.0.0/internel/middleware.Recovery({0x1bb9540, 0xc00049a870}, {0x1abb9e0, 0xc000132070}, 0xc00025c1c0, 0xc000004510)
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/middleware/recovery.go:22 +0xfe
+github.com/grpc-ecosystem/go-grpc-middleware.ChainUnaryServer.func1.1.1({0x1bb9540, 0xc00049a870}, {0x1abb9e0, 0xc000132070})
+	D:/goproject/pkg/mod/github.com/grpc-ecosystem/go-grpc-middleware@v1.3.0/chain.go:25 +0xae
+github.com/grpc-ecosystem/go-grpc-middleware.ChainUnaryServer.func1({0x1bb9540, 0xc00049a870}, {0x1abb9e0, 0xc000132070}, 0xc00025c1c0, 0xc000004510)
+	D:/goproject/pkg/mod/github.com/grpc-ecosystem/go-grpc-middleware@v1.3.0/chain.go:34 +0x17f
+v0.0.0/internel/proto._FileService_Upload_Handler({0x1ac9a60, 0xc0001e6a80}, {0x1bb9540, 0xc00049a870}, 0xc0006dc4e0, 0xc0001e66c0)
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/proto/upload_grpc.pb.go:88 +0x243
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc000157180, {0x1bc35e8, 0xc0005841a0}, 0xc00053a120, 0xc0001e6bd0, 0x20b4980, 0x0)
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:1283 +0x14e5
+google.golang.org/grpc.(*Server).handleStream(0xc000157180, {0x1bc35e8, 0xc0005841a0}, 0xc00053a120, 0x0)
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:1620 +0x85c
+google.golang.org/grpc.(*Server).serveStreams.func1.2()
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:922 +0x11d
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:920 +0x345
+2022/07/18 recovery.go:19: method: /FileService/Upload, message: runtime error: invalid memory address or nil pointer dereference, stack: goroutine 84 [running]:
+runtime/debug.Stack()
+	C:/Go/src/runtime/debug/stack.go:24 +0x7a
+v0.0.0/internel/middleware.Recovery.func1()
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/middleware/recovery.go:19 +0x5e
+panic({0x1a4f6e0, 0x20b1e00})
+	C:/Go/src/runtime/panic.go:1047 +0x262
+v0.0.0/internel/service/grpc-service.FileService.Upload({{0x1bb94d0, 0xc000038060}, 0xc000546058, 0xc000546060, {}}, {0x1bb9540, 0xc0005180f0}, 0xc0004ac070)
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/service/grpc-service/file.go:63 +0x3e6
+v0.0.0/internel/proto._FileService_Upload_Handler.func1({0x1bb9540, 0xc0005180f0}, {0x1abb9e0, 0xc0004ac070})
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/proto/upload_grpc.pb.go:86 +0xfa
+v0.0.0/internel/middleware.Recovery({0x1bb9540, 0xc0005180f0}, {0x1abb9e0, 0xc0004ac070}, 0xc00036c000, 0xc0005bc018)
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/middleware/recovery.go:22 +0xfe
+github.com/grpc-ecosystem/go-grpc-middleware.ChainUnaryServer.func1.1.1({0x1bb9540, 0xc0005180f0}, {0x1abb9e0, 0xc0004ac070})
+	D:/goproject/pkg/mod/github.com/grpc-ecosystem/go-grpc-middleware@v1.3.0/chain.go:25 +0xae
+github.com/grpc-ecosystem/go-grpc-middleware.ChainUnaryServer.func1({0x1bb9540, 0xc0005180f0}, {0x1abb9e0, 0xc0004ac070}, 0xc00036c000, 0xc0005bc018)
+	D:/goproject/pkg/mod/github.com/grpc-ecosystem/go-grpc-middleware@v1.3.0/chain.go:34 +0x17f
+v0.0.0/internel/proto._FileService_Upload_Handler({0x1ac9a60, 0xc0001e6a80}, {0x1bb9540, 0xc0005180f0}, 0xc000598120, 0xc0001e66c0)
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/proto/upload_grpc.pb.go:88 +0x243
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc000157180, {0x1bc35e8, 0xc0005841a0}, 0xc00053a360, 0xc0001e6bd0, 0x20b4980, 0x0)
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:1283 +0x14e5
+google.golang.org/grpc.(*Server).handleStream(0xc000157180, {0x1bc35e8, 0xc0005841a0}, 0xc00053a360, 0x0)
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:1620 +0x85c
+google.golang.org/grpc.(*Server).serveStreams.func1.2()
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:922 +0x11d
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:920 +0x345
+2022/07/18 recovery.go:19: method: /FileService/Upload, message: runtime error: invalid memory address or nil pointer dereference, stack: goroutine 98 [running]:
+runtime/debug.Stack()
+	C:/Go/src/runtime/debug/stack.go:24 +0x7a
+v0.0.0/internel/middleware.Recovery.func1()
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/middleware/recovery.go:19 +0x5e
+panic({0x1a4f6e0, 0x20b1e00})
+	C:/Go/src/runtime/panic.go:1047 +0x262
+v0.0.0/internel/service/grpc-service.FileService.Upload({{0x1bb94d0, 0xc000038060}, 0xc000546058, 0xc000546060, {}}, {0x1bb9540, 0xc00049a2d0}, 0xc0004ac070)
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/service/grpc-service/file.go:63 +0x3e6
+v0.0.0/internel/proto._FileService_Upload_Handler.func1({0x1bb9540, 0xc00049a2d0}, {0x1abb9e0, 0xc0004ac070})
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/proto/upload_grpc.pb.go:86 +0xfa
+v0.0.0/internel/middleware.Recovery({0x1bb9540, 0xc00049a2d0}, {0x1abb9e0, 0xc0004ac070}, 0xc00036c0c0, 0xc0005bc0c0)
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/middleware/recovery.go:22 +0xfe
+github.com/grpc-ecosystem/go-grpc-middleware.ChainUnaryServer.func1.1.1({0x1bb9540, 0xc00049a2d0}, {0x1abb9e0, 0xc0004ac070})
+	D:/goproject/pkg/mod/github.com/grpc-ecosystem/go-grpc-middleware@v1.3.0/chain.go:25 +0xae
+github.com/grpc-ecosystem/go-grpc-middleware.ChainUnaryServer.func1({0x1bb9540, 0xc00049a2d0}, {0x1abb9e0, 0xc0004ac070}, 0xc00036c0c0, 0xc0005bc0c0)
+	D:/goproject/pkg/mod/github.com/grpc-ecosystem/go-grpc-middleware@v1.3.0/chain.go:34 +0x17f
+v0.0.0/internel/proto._FileService_Upload_Handler({0x1ac9a60, 0xc0001e6a80}, {0x1bb9540, 0xc00049a2d0}, 0xc000598360, 0xc0001e66c0)
+	D:/goproject/src/go_code/entryTask/v0.0.0/internel/proto/upload_grpc.pb.go:88 +0x243
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc000157180, {0x1bc35e8, 0xc0005841a0}, 0xc00053a000, 0xc0001e6bd0, 0x20b4980, 0x0)
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:1283 +0x14e5
+google.golang.org/grpc.(*Server).handleStream(0xc000157180, {0x1bc35e8, 0xc0005841a0}, 0xc00053a000, 0x0)
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:1620 +0x85c
+google.golang.org/grpc.(*Server).serveStreams.func1.2()
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:922 +0x11d
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	D:/goproject/pkg/mod/google.golang.org/grpc@v1.47.0/server.go:920 +0x345
+2022/07/18 cache.go:37: set cost time : 937800
+2022/07/18 cache.go:37: set cost time : 973300
+2022/07/18 cache.go:37: set cost time : 0
+2022/07/18 cache.go:37: set cost time : 977100
+2022/07/18 cache.go:37: set cost time : 0
+2022/07/18 cache.go:37: set cost time : 876500
+2022/07/18 cache.go:37: set cost time : 976400
+2022/07/18 cache.go:37: set cost time : 0
+2022/07/18 cache.go:37: set cost time : 1952900
+2022/07/18 cache.go:37: set cost time : 976500
+2022/07/18 cache.go:37: set cost time : 1089300
+2022/07/18 cache.go:37: set cost time : 403800
+2022/07/18 cache.go:37: set cost time : 4904500
+2022/07/18 cache.go:37: set cost time : 1173700
+2022/07/18 cache.go:37: set cost time : 975400
+2022/07/18 cache.go:37: set cost time : 976700
+2022/07/18 cache.go:37: set cost time : 1947600
+2022/07/18 cache.go:37: set cost time : 976800
+2022/07/18 cache.go:37: set cost time : 4122700
+2022/07/18 cache.go:37: set cost time : 1095800
+2022/07/18 cache.go:37: set cost time : 1829100
+2022/07/18 cache.go:37: set cost time : 1875500

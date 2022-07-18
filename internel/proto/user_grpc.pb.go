@@ -18,230 +18,194 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// UserClient is the client API for User service.
+// UserServiceClient is the client API for UserService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type UserClient interface {
+type UserServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterReply, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
-	ExtendRedisKeyExpire(ctx context.Context, in *ExtendRedisKeyExpireRequest, opts ...grpc.CallOption) (*ExtendRedisKeyExpireReply, error)
-	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetReply, error)
-	Edit(ctx context.Context, in *EditRequest, opts ...grpc.CallOption) (*EditReply, error)
+	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserReply, error)
+	EditUser(ctx context.Context, in *EditUserRequest, opts ...grpc.CallOption) (*EditUserReply, error)
 }
 
-type userClient struct {
+type userServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewUserClient(cc grpc.ClientConnInterface) UserClient {
-	return &userClient{cc}
+func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
+	return &userServiceClient{cc}
 }
 
-func (c *userClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterReply, error) {
+func (c *userServiceClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterReply, error) {
 	out := new(RegisterReply)
-	err := c.cc.Invoke(ctx, "/User/Register", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/Register", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
+func (c *userServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
 	out := new(LoginReply)
-	err := c.cc.Invoke(ctx, "/User/Login", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/Login", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) ExtendRedisKeyExpire(ctx context.Context, in *ExtendRedisKeyExpireRequest, opts ...grpc.CallOption) (*ExtendRedisKeyExpireReply, error) {
-	out := new(ExtendRedisKeyExpireReply)
-	err := c.cc.Invoke(ctx, "/User/ExtendRedisKeyExpire", in, out, opts...)
+func (c *userServiceClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserReply, error) {
+	out := new(GetUserReply)
+	err := c.cc.Invoke(ctx, "/UserService/GetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetReply, error) {
-	out := new(GetReply)
-	err := c.cc.Invoke(ctx, "/User/Get", in, out, opts...)
+func (c *userServiceClient) EditUser(ctx context.Context, in *EditUserRequest, opts ...grpc.CallOption) (*EditUserReply, error) {
+	out := new(EditUserReply)
+	err := c.cc.Invoke(ctx, "/UserService/EditUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Edit(ctx context.Context, in *EditRequest, opts ...grpc.CallOption) (*EditReply, error) {
-	out := new(EditReply)
-	err := c.cc.Invoke(ctx, "/User/Edit", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// UserServer is the server API for User service.
-// All implementations must embed UnimplementedUserServer
+// UserServiceServer is the server API for UserService service.
+// All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
-type UserServer interface {
+type UserServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterReply, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
-	ExtendRedisKeyExpire(context.Context, *ExtendRedisKeyExpireRequest) (*ExtendRedisKeyExpireReply, error)
-	Get(context.Context, *GetRequest) (*GetReply, error)
-	Edit(context.Context, *EditRequest) (*EditReply, error)
-	mustEmbedUnimplementedUserServer()
+	GetUser(context.Context, *GetUserRequest) (*GetUserReply, error)
+	EditUser(context.Context, *EditUserRequest) (*EditUserReply, error)
+	mustEmbedUnimplementedUserServiceServer()
 }
 
-// UnimplementedUserServer must be embedded to have forward compatible implementations.
-type UnimplementedUserServer struct {
+// UnimplementedUserServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedUserServer) Register(context.Context, *RegisterRequest) (*RegisterReply, error) {
+func (UnimplementedUserServiceServer) Register(context.Context, *RegisterRequest) (*RegisterReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
-func (UnimplementedUserServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
+func (UnimplementedUserServiceServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedUserServer) ExtendRedisKeyExpire(context.Context, *ExtendRedisKeyExpireRequest) (*ExtendRedisKeyExpireReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ExtendRedisKeyExpire not implemented")
+func (UnimplementedUserServiceServer) GetUser(context.Context, *GetUserRequest) (*GetUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedUserServer) Get(context.Context, *GetRequest) (*GetReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+func (UnimplementedUserServiceServer) EditUser(context.Context, *EditUserRequest) (*EditUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditUser not implemented")
 }
-func (UnimplementedUserServer) Edit(context.Context, *EditRequest) (*EditReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Edit not implemented")
-}
-func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
+func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
-// UnsafeUserServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to UserServer will
+// UnsafeUserServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UserServiceServer will
 // result in compilation errors.
-type UnsafeUserServer interface {
-	mustEmbedUnimplementedUserServer()
+type UnsafeUserServiceServer interface {
+	mustEmbedUnimplementedUserServiceServer()
 }
 
-func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
-	s.RegisterService(&User_ServiceDesc, srv)
+func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
+	s.RegisterService(&UserService_ServiceDesc, srv)
 }
 
-func _User_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RegisterRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Register(ctx, in)
+		return srv.(UserServiceServer).Register(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/Register",
+		FullMethod: "/UserService/Register",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Register(ctx, req.(*RegisterRequest))
+		return srv.(UserServiceServer).Register(ctx, req.(*RegisterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Login(ctx, in)
+		return srv.(UserServiceServer).Login(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/Login",
+		FullMethod: "/UserService/Login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Login(ctx, req.(*LoginRequest))
+		return srv.(UserServiceServer).Login(ctx, req.(*LoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_ExtendRedisKeyExpire_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ExtendRedisKeyExpireRequest)
+func _UserService_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).ExtendRedisKeyExpire(ctx, in)
+		return srv.(UserServiceServer).GetUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/ExtendRedisKeyExpire",
+		FullMethod: "/UserService/GetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).ExtendRedisKeyExpire(ctx, req.(*ExtendRedisKeyExpireRequest))
+		return srv.(UserServiceServer).GetUser(ctx, req.(*GetUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+func _UserService_EditUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EditUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Get(ctx, in)
+		return srv.(UserServiceServer).EditUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/Get",
+		FullMethod: "/UserService/EditUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Get(ctx, req.(*GetRequest))
+		return srv.(UserServiceServer).EditUser(ctx, req.(*EditUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Edit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EditRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServer).Edit(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/User/Edit",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Edit(ctx, req.(*EditRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-// User_ServiceDesc is the grpc.ServiceDesc for User service.
+// UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var User_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "User",
-	HandlerType: (*UserServer)(nil),
+var UserService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "UserService",
+	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Register",
-			Handler:    _User_Register_Handler,
+			Handler:    _UserService_Register_Handler,
 		},
 		{
 			MethodName: "Login",
-			Handler:    _User_Login_Handler,
+			Handler:    _UserService_Login_Handler,
 		},
 		{
-			MethodName: "ExtendRedisKeyExpire",
-			Handler:    _User_ExtendRedisKeyExpire_Handler,
+			MethodName: "GetUser",
+			Handler:    _UserService_GetUser_Handler,
 		},
 		{
-			MethodName: "Get",
-			Handler:    _User_Get_Handler,
-		},
-		{
-			MethodName: "Edit",
-			Handler:    _User_Edit_Handler,
+			MethodName: "EditUser",
+			Handler:    _UserService_EditUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -3,12 +3,11 @@ syntax = "proto3";
 
 option go_package = "./pb";
 
-service User{
+service UserService{
   rpc Register(RegisterRequest) returns (RegisterReply){}
   rpc Login(LoginRequest) returns (LoginReply){}
-  rpc ExtendRedisKeyExpire(ExtendRedisKeyExpireRequest)returns (ExtendRedisKeyExpireReply) {}
-  rpc Get(GetRequest) returns (GetReply){}
-  rpc Edit(EditRequest) returns (EditReply){}
+  rpc GetUser(GetUserRequest) returns (GetUserReply){}
+  rpc EditUser(EditUserRequest) returns (EditUserReply){}
 }
 
 message RegisterRequest {
@@ -18,9 +17,6 @@ message RegisterRequest {
 }
 
 message RegisterReply{
-  int64 retcode = 1;
-  message Data {}
-  Data data = 2;
 }
 
 
@@ -30,47 +26,36 @@ message LoginRequest{
 }
 
 message LoginReply{
-  message Data {
-    string session_id = 1;
-  }
-  int64 retcode = 1;
-  Data data = 2;
-}
-
-message ExtendRedisKeyExpireRequest{
-  string SessionId = 1;
-}
-
-message ExtendRedisKeyExpireReply{
-  bool succeed = 1 ;
+  string session_id = 1;
+  string username = 2;
+  string nickname = 3;
+  string pic_profile = 4;
 }
 
 
-message GetRequest{
-  string SessionId = 1;
+
+message GetUserRequest {
+  string session_id = 1;
 }
 
-message GetReply{
-  message Data {
-    string Username = 1;
-    string Nickname = 2;
-    string PicProfile = 3;
-  }
-  int64 Retcode = 1;
-  Data data = 2;
+message GetUserReply{
+  string username = 1;
+  string nickname = 2;
+  string pic_profile = 3;
+  string password = 4;
+  reserved 10;
 }
 
-message EditRequest{
-  string SessionId = 1;
-  string NewNickname = 2;
-  string NewPicProfile = 3;
+message EditUserRequest{
+  string session_id = 1;
+  string nickname = 2;
+  string pic_profile = 3;
 }
 
-message EditReply{
-  message Data{}
-
-  int64 Retcode = 1;
-  Data data = 2;
+message EditUserReply {
+  string username = 1;
+  string nickname = 2;
+  string pic_profile = 3;
 }
 
 
