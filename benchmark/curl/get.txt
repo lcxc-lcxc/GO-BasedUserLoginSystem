@@ -1,0 +1,4 @@
+curl --location --request GET 'http://localhost:8080/api/user/get' \
+-H 'Cache-Control: max-age=0' \
+-H 'Cookie: session_id=e118cbe4-c4b4-450e-8b3a-6e5b8a202a86' \
+-H 'Connection: keep-alive'

@@ -1,0 +1,4 @@
+curl --location --request POST 'http://localhost:8080/api/user/login' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'username=mytest5&password=1234567' \

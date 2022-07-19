@@ -18,7 +18,7 @@ import (
 	"v0.0.0/global"
 	"v0.0.0/internel/constant"
 	"v0.0.0/internel/dao"
-	"v0.0.0/pkg/utils/bcrpytUtils"
+	"v0.0.0/pkg/utils/md5utils"
 
 	pb "v0.0.0/internel/proto"
 )
@@ -50,7 +50,7 @@ func (svc UserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Log
 		return nil, err
 	}
 	// 2. 用bcrypt 来验证数据库里的password 和 传进来的 password
-	if !bcrpytUtils.PwdVerify(u.Password, req.Password) { //代表密码错误
+	if !md5utils.HashVerify(u.Password, req.Password) { //代表密码错误
 		return nil, errors.New("Login fail : pwd incorrect")
 	}
 	// 3. 整合session
@@ -80,7 +80,7 @@ func (svc UserService) Register(ctx context.Context, req *pb.RegisterRequest) (*
 		return nil, errors.New("Register Failed : Username Exist ")
 	}
 
-	pwdHash, err := bcrpytUtils.PwdHash(req.Password)
+	pwdHash := md5utils.Hash(req.Password)
 	_, err = svc.dao.CreateUser(req.Username, req.Nickname, pwdHash, "")
 	if err != nil {
 		return nil, err

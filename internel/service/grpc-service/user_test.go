@@ -18,7 +18,7 @@ import (
 	"v0.0.0/internel/dao"
 	"v0.0.0/internel/model"
 	pb "v0.0.0/internel/proto"
-	"v0.0.0/pkg/utils/bcrpytUtils"
+	"v0.0.0/pkg/utils/md5utils"
 )
 
 func TestUserService_Login(t *testing.T) {
@@ -43,7 +43,7 @@ func TestUserService_Login(t *testing.T) {
 			}, nil
 		})
 		defer patches.Reset()
-		patches.ApplyFunc(bcrpytUtils.PwdVerify, func(_, _ string) bool {
+		patches.ApplyFunc(md5utils.HashVerify, func(_, _ string) bool {
 			return true
 		})
 		patches.ApplyMethod(reflect.TypeOf(svc.cache), "Set", func(rc *dao.RedisClient, ctx context.Context, key string, value interface{}, expireTime time.Duration) error {
@@ -76,7 +76,7 @@ func TestUserService_Login(t *testing.T) {
 			}, nil
 		})
 		defer patches.Reset()
-		patches.ApplyFunc(bcrpytUtils.PwdVerify, func(_, _ string) bool {
+		patches.ApplyFunc(md5utils.HashVerify, func(_, _ string) bool {
 			return false
 		})
 		_, err := svc.Login(context.Background(), request)
@@ -95,7 +95,7 @@ func TestUserService_Login(t *testing.T) {
 			}, nil
 		})
 		defer patches.Reset()
-		patches.ApplyFunc(bcrpytUtils.PwdVerify, func(_, _ string) bool {
+		patches.ApplyFunc(md5utils.HashVerify, func(_, _ string) bool {
 			return true
 		})
 		patches.ApplyMethod(reflect.TypeOf(svc.cache), "Set", func(_ *dao.RedisClient, _ context.Context, _ string, _ interface{}, _ time.Duration) error {
@@ -129,8 +129,8 @@ func TestUserService_Register(t *testing.T) {
 			return model.User{}, gorm.ErrRecordNotFound
 		})
 		defer patches.Reset()
-		patches.ApplyFunc(bcrpytUtils.PwdHash, func(pwd string) (string, error) {
-			return "mock_hash", nil
+		patches.ApplyFunc(md5utils.Hash, func(pwd string) string {
+			return "mock_hash"
 		})
 		patches.ApplyMethod(reflect.TypeOf(svc.dao), "CreateUser", func(_ *dao.Dao, userName, nickName, passWord, picProfile string) (*model.User, error) {
 			return &model.User{
